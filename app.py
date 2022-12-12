@@ -143,15 +143,24 @@ def borrow_book(borrowed_file, check_available_books, view_students):
 		print(True)
 		print(f'{prompt_student} is registered, and {prompt_book} is available to borrow.')
 	
-		borrow_confirmation = f'{prompt_book} - {prompt_student}'
-		print(borrow_confirmation)
-		with open(borrowed_file, 'a') as f:
-			f.write(borrow_confirmation)
-			f.write('\n')
+		request_book = input('Would you like to take this book? (y/n): ')
+
+		if request_book == 'y':
+			borrow_confirmation = f'{prompt_book}-{prompt_student}'
+			print(f'You have taken: {borrow_confirmation}')
+
+			with open(borrowed_file, 'a') as f:
+				f.write(borrow_confirmation)
+				f.write('\n')
+		elif request_book == 'n':
+			print(f'you have decided not to take {prompt_book}')
+			pass
+
 	elif prompt_book not in check_available_books:
 		print(f'{prompt_book} is not available, sorry.')
 		# if the student is not there don't continue.
 		print(False)
+		
 	elif prompt_student not in view_students:
 		print(f'{prompt_student} is not registered. Please register before you can borrow books.')
 	# if book is in library, pop the line. 
@@ -159,7 +168,7 @@ def borrow_book(borrowed_file, check_available_books, view_students):
 	# move into borrowed file
 	# gather the library with the removed book, and WRITE the library again.
 	
-# student_request = borrow_book('borrower.txt', check_available_books, view_students)
+#student_request = borrow_book('borrower.txt', check_available_books, view_students)
 
 # When a book is borrowed, add user and book to borrower text file - DONE
 # The app should then go into the library file and remove the book. then reappend the list again with the removed book.
@@ -168,14 +177,20 @@ def inquire_books(borrowed_file):
 
 	with open(borrowed_file, 'r') as f:
 		lines = f.readlines()
-		data = []
+		borrowed_book_and_students = []
 
 		for line in lines:
 			format_borrowed_files = line.strip().split('-')
 			
 			# create dict for each user borrowing book.
-			user = {'book_title': format_borrowed_files[0], 'borrowed_by': format_borrowed_files[1]}
-			data.append(user)
-	print(data)
+			student = {'book_title': format_borrowed_files[0], 'borrowed_by': format_borrowed_files[1]}
+			borrowed_book_and_students.append(student)
+
+	# View the book by title and who currently has the book.
+	for info in borrowed_book_and_students:
+		title = f"{info['book_title']}"
+		student = f"{info['borrowed_by']}"
+		print(f'Book Title: {title}\nBorrowed By: {student}\n')
+
 
 inquire_books('borrower.txt')
