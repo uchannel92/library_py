@@ -113,14 +113,14 @@ def check_book_availability(book_filename, books_borrowed, check_available_books
 	else:
 		print('That book is not available. sorry.')
 
-view_students = view_registered_students('students.txt')	
+# view_students = view_registered_students('students.txt')	
 #new_user = register_student('students.txt', view_students)
 #view_library = view_library('library.txt')
 #new_book = add_book('library.txt', view_library)
 
 
 # returns a list which is library text file.
-check_available_books = view_library('library.txt')
+# check_available_books = view_library('library.txt')
 
 # check_book_availability function
 # my_check = check_book_availability('library.txt', 'borrower.txt', check_available_books)		
@@ -159,7 +159,23 @@ def borrow_book(borrowed_file, check_available_books, view_students):
 	# move into borrowed file
 	# gather the library with the removed book, and WRITE the library again.
 	
-student_request = borrow_book('borrower.txt', check_available_books, view_students)
+# student_request = borrow_book('borrower.txt', check_available_books, view_students)
 
 # When a book is borrowed, add user and book to borrower text file - DONE
 # The app should then go into the library file and remove the book. then reappend the list again with the removed book.
+
+def inquire_books(borrowed_file):
+
+	with open(borrowed_file, 'r') as f:
+		lines = f.readlines()
+		data = []
+
+		for line in lines:
+			format_borrowed_files = line.strip().split('-')
+			
+			# create dict for each user borrowing book.
+			user = {'book_title': format_borrowed_files[0], 'borrowed_by': format_borrowed_files[1]}
+			data.append(user)
+	print(data)
+
+inquire_books('borrower.txt')
