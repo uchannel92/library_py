@@ -100,27 +100,49 @@ def enquire_books(borrower_file):
 
 	
 # Ask to borrow a book here.
-def check_book_availability(students_list, books_list):
+def check_book_availability(students_list, books_list, students_file, library_file, borrower_file):
 	# Enter the book name you want to take.
+
 	prompt_name = input('Enter your registered name: ')
-	prompt = input('Enter the book you want to take: ')
+	prompt_book = input('Enter the book you want to take: ')
 
-	if prompt in books_list and prompt_name in students_list:
-	# Then Confirm if student is in the list.
-		print(True)
-	else:
-		print(False)
-	# if Both are confirmed first remove both names from each file / This could be a function? remove_student('Name')
+	if prompt_name in students_list and prompt_book in books_list:
+		print('Validation is Successful.')
+		name_search = students_list.index(prompt_name)
+		book_search = books_list.index(prompt_book)
+		confirmed_student = students_list.pop(name_search)
+		confirmed_book = books_list.pop(book_search)
 
-	# else reject
+		# update student file with removed name
+		with open(students_file, 'w') as f:
+			for student in students_list:
+				f.write(student)
+				f.write('\n')
 
+		# update book file with removed book
+		with open(library_file, 'w') as f:
+			for book in books_list:
+				f.write(book)
+				f.write('\n')
+
+		# append loaned book and loanee to the borrower text file.
+		borrow_confirmation = f'{confirmed_book}-{confirmed_student}'
+		print(f'You have taken: {borrow_confirmation}')
+
+		with open(borrower_file, 'a') as f:
+			f.write(borrow_confirmation)
+			f.write('\n')
+	else:		
+		print('Unfortunately either your name or book is not in our files. Please check spelling etc.')
+	
+	
 # Starts project.
 def process_file():
 	print('Welcome to this library file.')
 
 	while True:
 		print('\nMAIN MENU: Select your options.')
-		prompt = input('1. register student | 2. check books / students | 3. add book | 4. loan enquiry | 5. Take book | 6. quit: ')
+		prompt = input('1. register student\n2. check books / students\n3. add book\n4. loan enquiry\n5. Take book\n6. quit: ')
 
 		if prompt == '1':
 
@@ -146,12 +168,15 @@ def process_file():
 		elif prompt == '5':
 			students_list = get_students('students.txt')
 			books_list = get_books('library.txt')
-			take_book = check_book_availability(students_list, books_list)
+			take_book = check_book_availability(students_list, books_list, 'students.txt', 'library.txt', 'borrower.txt')
 			continue
 
-		elif prompt == '6' or 'quit':
+		elif prompt == '6' or  prompt == 'quit':
 			break
 
+		else:
+			print('\n *** ERROR *** : please enter a valid number option.\n')
 
-# Run the project here
+
+# Run the project by uncommenting this file.
 start_project = process_file() 

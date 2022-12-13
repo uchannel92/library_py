@@ -2,5 +2,4 @@ Python Crashcourse
 I am Zlatan Ibrahimovic
 48 laws of power
 of mice and men
-naruto
 lord of the flies
