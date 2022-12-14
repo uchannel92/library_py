@@ -179,4 +179,4 @@ def process_file():
 
 
 # Run the project by uncommenting this file.
-start_project = process_file() 
+# start_project = process_file() 
